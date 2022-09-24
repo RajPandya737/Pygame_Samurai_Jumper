@@ -1,0 +1,10 @@
+#Dimesions
+WIDTH = 1080
+HEIGHT = 720
+TILESIZE = 16
+FPS = 60
+#
+#Player Info
+PLAYER_LAYER = 1
+
+RED = (255,0,0)
