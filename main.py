@@ -8,7 +8,7 @@ class Game:
         #Initialise the screen and basic functions
         pg.init()
         self.SCREEN = pg.display.set_mode((WIDTH, HEIGHT))
-        self.caption = pg.display.set_caption('Celeste')
+        self.caption = pg.display.set_caption('Samurai Jumper')
         self.clock = pg.time.Clock()
         #self.font = pg.font.Font('Ariel', 32)
         self.running = True
@@ -18,7 +18,7 @@ class Game:
         self.playing = True
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.blocks = pg.sprite.LayeredUpdates()
-        self.player = Player(self, 1,2)
+        self.player = Player(self, 5,30)
     
     def events(self):
         for event in pg.event.get():
@@ -45,6 +45,10 @@ class Game:
 
     def intro_screen(self):
         pass
+
+
+
+
 if __name__ == '__main__':
     game = Game()
     game.intro_screen
