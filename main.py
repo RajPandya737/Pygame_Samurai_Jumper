@@ -12,13 +12,20 @@ class Game:
         self.clock = pg.time.Clock()
         #self.font = pg.font.Font('Ariel', 32)
         self.running = True
+    def createTilemap(self):
+        for i , row in enumerate(tilemap):
+            for j, col in enumerate(row):
+                if col == 'B':
+                    Block(self, j, i)
+                if col == 'P':
+                    Player(self, j, i)
 
     def new(self):
         #When a new game starts
         self.playing = True
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.blocks = pg.sprite.LayeredUpdates()
-        self.player = Player(self, 5,30)
+        self.createTilemap()
     
     def events(self):
         for event in pg.event.get():

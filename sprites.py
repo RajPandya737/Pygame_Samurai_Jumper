@@ -12,7 +12,7 @@ class Player(pg.sprite.Sprite):
 
         self.x = x * TILESIZE
         self.y = y*TILESIZE
-        self.width = TILESIZE
+        self.width = TILESIZE*3
         self.height = TILESIZE*3
 
         self.x_change = 0
@@ -64,4 +64,24 @@ class Player(pg.sprite.Sprite):
                 self.pressed = False
             
 
-        #add jumping mechanics here
+class Block(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self._layer = BLOCK_LAYER
+        self.groups = self.game.all_sprites, self.game.blocks
+        pg.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.width = TILESIZE
+        self.height = TILESIZE
+
+
+        self.image = pg.Surface([self.width, self.height])
+        self.image.fill(BLUE)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+
