@@ -3,6 +3,17 @@ from config import *
 import math
 import random
 
+class Spritesheet:
+    def __init__(self, file):
+        self.sheet = pg.image.load(file).convert_alpha()
+
+    def get_sprite(self, x, y, width, height):
+        sprite = pg.Surface([width, height])
+        sprite.blit(self.sheet, (0,0), (x,y,width,height))
+        sprite.set_colorkey(YELLOW)
+        return sprite
+
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
@@ -11,9 +22,9 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x * TILESIZE
-        self.y = y*TILESIZE
-        self.width = TILESIZE*3
-        self.height = TILESIZE*3
+        self.y = y * TILESIZE
+        self.width = TILESIZE
+        self.height = TILESIZE
 
         self.x_change = 0
         self.y_change = 0
@@ -22,13 +33,14 @@ class Player(pg.sprite.Sprite):
         self.up_v = 0
         self.pressed = False
 
-        self.image = pg.Surface([self.width, self.height])
-        self.image.fill(RED)
+        self.image = self.game.character_spritesheet.get_sprite(0,0, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
-    
+
+        
+
     def update(self):
         self.movement()
 
@@ -77,8 +89,7 @@ class Block(pg.sprite.Sprite):
         self.height = TILESIZE
 
 
-        self.image = pg.Surface([self.width, self.height])
-        self.image.fill(BLUE)
+        self.image = self.game.terrain_spritesheet.get_sprite(0,0, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x

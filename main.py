@@ -12,10 +12,14 @@ class Game:
         self.clock = pg.time.Clock()
         #self.font = pg.font.Font('Ariel', 32)
         self.running = True
+        self.character_spritesheet = Spritesheet('assets/sprites/Samurai_Sprites.png')
+        self.terrain_spritesheet = Spritesheet('assets//template/Terrain_Sprites.jpg')
+        self.bg = pg.image.load('assets/template/background.jpg').convert()
+
     def createTilemap(self):
         for i , row in enumerate(tilemap):
             for j, col in enumerate(row):
-                if col == 'B':
+                if col == 'B' or col == 'G' or col == 'S':
                     Block(self, j, i)
                 if col == 'P':
                     Player(self, j, i)
@@ -32,10 +36,12 @@ class Game:
             if event.type == pg.QUIT:
                 self.playing = False
                 self.running = False
+
     def update(self):
         self.all_sprites.update()
+
     def draw(self):
-        self.SCREEN.fill((0,0,0))
+        self.SCREEN.blit(self.bg, (0,0))
         self.all_sprites.draw(self.SCREEN)
         self.clock.tick(FPS)
         pg.display.update()
