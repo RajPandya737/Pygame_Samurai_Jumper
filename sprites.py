@@ -44,8 +44,10 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.movement()
 
-        self.rect.x += self.x_change
+        self.collide_blocks_y()
         self.rect.y += self.y_change
+        self.collide_blocks_x()
+        self.rect.x += self.x_change
 
         self.x_change = 0
         self.y_change = 0
@@ -68,12 +70,33 @@ class Player(pg.sprite.Sprite):
         if self.jump is True:
             self.y_change -= self.up_v
             self.up_v-=GRAVITY
-            #temperary setup, in future, if it has a collision with anything
-            if self.up_v<=(JUMP_SPEED*-1):
+
+
+    def collide_blocks_y(self):
+        hits = pg.sprite.spritecollide(self, self.game.blocks, False)
+        if hits:
+            if self.y_change > 0:
+                self.rect.y = hits[0].rect.top - self.rect.height
                 self.y_change = 0
                 self.jump = False
                 self.up_v = 0
                 self.pressed = False
+            if self.y_change < 0:
+                self.rect.y = hits[0].rect.bottom
+
+
+    def collide_blocks_x(self):
+        
+        hits = pg.sprite.spritecollide(self, self.game.blocks, False)
+        if hits:
+            if self.x_change > 0 and self.facing == 'left':
+                self.rect.x = hits[0].rect.left - self.rect.width
+            if self.x_change < 0 and self.facing == 'right':
+                self.rect.x = hits[0].rect.right
+        if self.rect.x < 200:
+            self.rect.x = 200
+            
+            
             
 
 class Block(pg.sprite.Sprite):
