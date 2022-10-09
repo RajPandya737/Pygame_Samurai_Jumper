@@ -93,6 +93,7 @@ class Player(pg.sprite.Sprite):
                 self.rect.x = hits[0].rect.left - self.rect.width
             if self.x_change < 0 and self.facing == 'right':
                 self.rect.x = hits[0].rect.right
+        #temporary solution to the problem, will add real collision soon
         if self.rect.x < 200:
             self.rect.x = 200
             
