@@ -39,11 +39,12 @@ class Player(pg.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
+        self.frame = 0
         
 
     def update(self):
         self.movement()
-
+        self.animate()
         self.collide_blocks_y()
         self.rect.y += self.y_change
         self.collide_blocks_x()
@@ -55,12 +56,15 @@ class Player(pg.sprite.Sprite):
     def movement(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
+            for sprite in self.game.all_sprites:
+                sprite.rect.x+=PLAYER_SPEED
             self.x_change -= PLAYER_SPEED
             self.facing = 'left'
         if keys[pg.K_RIGHT]:
+            for sprite in self.game.all_sprites:
+                sprite.rect.x-=PLAYER_SPEED
             self.x_change += PLAYER_SPEED
             self.facing = 'right'
-
         if keys[pg.K_UP]:
             self.jump = True
             if self.pressed is False:
@@ -88,17 +92,45 @@ class Player(pg.sprite.Sprite):
     def collide_blocks_x(self):
         
         hits = pg.sprite.spritecollide(self, self.game.blocks, False)
-        if hits:
-            if self.x_change > 0 and self.facing == 'left':
+        if hits and self.jump is False:
+            if self.x_change > 0:
                 self.rect.x = hits[0].rect.left - self.rect.width
-            if self.x_change < 0 and self.facing == 'right':
+
+            if self.x_change < 0 :
                 self.rect.x = hits[0].rect.right
-        #temporary solution to the problem, will add real collision soon
-        if self.rect.x < 200:
-            self.rect.x = 200
-            
-            
-            
+
+
+    def animate(self):
+        left = [self.game.character_spritesheet.get_sprite(0,0, self.width, self.height), 
+                    self.game.character_spritesheet.get_sprite(0,80, self.width, self.height),
+                    self.game.character_spritesheet.get_sprite(160,0, self.width, self.height) ]
+        right = [self.game.character_spritesheet.get_sprite(80,0, self.width, self.height), 
+                    self.game.character_spritesheet.get_sprite(80,80, self.width, self.height), 
+                    self.game.character_spritesheet.get_sprite(160,80, self.width, self.height)]
+        if self.jump is True and self.facing == 'left':
+            self.image = left[2]
+        elif self.jump is True and self.facing == 'right':
+            self.image = right[2]
+        elif self.facing == 'left':
+            if self.x_change == 0:
+                self.image = left[0]
+            else:
+                self.image = left[self.frame]
+                if self.frame == 0:
+                    self.frame = 1
+                else:
+                    self.frame = 0
+        elif self.facing == 'right':
+            if self.x_change == 0:
+                self.image = right[0]
+            else:
+                self.image = right[self.frame]
+                print(self.frame)
+                if self.frame == 0:
+                    self.frame = 1
+                else:
+                    self.frame = 0
+
 
 class Block(pg.sprite.Sprite):
     def __init__(self, game, x, y):
