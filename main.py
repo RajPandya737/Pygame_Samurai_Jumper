@@ -10,11 +10,13 @@ class Game:
         self.SCREEN = pg.display.set_mode((WIDTH, HEIGHT))
         self.caption = pg.display.set_caption('Samurai Jumper')
         self.clock = pg.time.Clock()
-        #self.font = pg.font.Font('Ariel', 32)
+        #place location instead of ariel in future with imported fonts
+        self.font = pg.font.Font('assets/sprites/Minecraft.ttf', 32)
         self.running = True
         self.character_spritesheet = Spritesheet('assets/sprites/Samurai_Sprites.png')
         self.terrain_spritesheet = Spritesheet('assets//template/Terrain_Sprites.jpg')
         self.bg = pg.image.load('assets/template/background.jpg').convert()
+        self.intro_background = pg.image.load('assets/template/SamuraiJumperOP.png').convert()
 
     def createTilemap(self):
         for i , row in enumerate(tilemap):
@@ -57,8 +59,28 @@ class Game:
         pass
 
     def intro_screen(self):
-        pass
+        intro = True
 
+        title = self.font.render('Samurai Jumper', True, BLACK)
+        title_rect = title.get_rect(x=10, y=10)
+        play_button = Button(10, 10, 100, 100, WHITE, BLACK, 'PLAY', 30)
+
+        while intro is True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    intro = False
+                    self.running = False
+            mouse_pos = pg.mouse.get_pos()
+            mouse_pressed = pg.mouse.get_pressed()
+        
+            self.SCREEN.blit(self.intro_background, (0,0))
+            self.SCREEN.blit(title, title_rect)
+            self.SCREEN.blit(play_button.image, play_button.rect)
+            self.clock.tick(FPS)
+            pg.display.update()
+            
+            if play_button.is_pressed(mouse_pos, mouse_pressed):
+                intro = False
 
 
 
