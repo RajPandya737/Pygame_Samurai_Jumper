@@ -87,6 +87,8 @@ class Player(pg.sprite.Sprite):
                 self.pressed = False
             if self.y_change < 0:
                 self.rect.y = hits[0].rect.bottom
+        else:
+            self.jump = True
 
 
     def collide_blocks_x(self):
