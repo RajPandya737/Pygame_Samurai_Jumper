@@ -109,9 +109,9 @@ class Player(pg.sprite.Sprite):
         right = [self.game.character_spritesheet.get_sprite(80,0, self.width, self.height), 
                     self.game.character_spritesheet.get_sprite(80,80, self.width, self.height), 
                     self.game.character_spritesheet.get_sprite(160,80, self.width, self.height)]
-        if self.jump is True and self.facing == 'left':
+        if self.jump is True and self.facing == 'left' and (self.y_change > 5 or self.y_change < -5):
             self.image = left[2]
-        elif self.jump is True and self.facing == 'right':
+        elif self.jump is True and self.facing == 'right' and (self.y_change > 5 or self.y_change < -5):
             self.image = right[2]
         elif self.facing == 'left':
             if self.x_change == 0:

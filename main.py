@@ -10,7 +10,6 @@ class Game:
         self.SCREEN = pg.display.set_mode((WIDTH, HEIGHT))
         self.caption = pg.display.set_caption('Samurai Jumper')
         self.clock = pg.time.Clock()
-        #place location instead of ariel in future with imported fonts
         self.font = pg.font.Font('assets/sprites/Minecraft.ttf', 32)
         self.running = True
         self.character_spritesheet = Spritesheet('assets/sprites/Samurai_Sprites.png')
@@ -19,6 +18,7 @@ class Game:
         self.intro_background = pg.image.load('assets/template/SamuraiJumperOP.png').convert()
 
     def createTilemap(self):
+        #displays the tiles according to the map written in the config file
         for i , row in enumerate(tilemap):
             for j, col in enumerate(row):
                 if col == 'B' or col == 'G' or col == 'S':
@@ -34,6 +34,7 @@ class Game:
         self.createTilemap()
     
     def events(self):
+        #gets key presses
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.playing = False
@@ -43,54 +44,28 @@ class Game:
         self.all_sprites.update()
 
     def draw(self):
+        #draws characters and other sprites on screen
         self.SCREEN.blit(self.bg, (0,0))
         self.all_sprites.draw(self.SCREEN)
         self.clock.tick(FPS)
         pg.display.update()
 
     def main(self):
+        #runs the game
         while self.playing is True:
             self.events()
             self.update()
             self.draw()
         self.running = False
             
-    def game_over(self):
-        pass
-
-    def intro_screen(self):
-        intro = True
-
-        title = self.font.render('Samurai Jumper', True, BLACK)
-        title_rect = title.get_rect(x=10, y=10)
-        play_button = Button(10, 10, 100, 100, WHITE, BLACK, 'PLAY', 30)
-
-        while intro is True:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    intro = False
-                    self.running = False
-            mouse_pos = pg.mouse.get_pos()
-            mouse_pressed = pg.mouse.get_pressed()
-        
-            self.SCREEN.blit(self.intro_background, (0,0))
-            self.SCREEN.blit(title, title_rect)
-            self.SCREEN.blit(play_button.image, play_button.rect)
-            self.clock.tick(FPS)
-            pg.display.update()
-            
-            if play_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
 
 
 
 if __name__ == '__main__':
     game = Game()
-    game.intro_screen
     game.new()
     while game.running:
         game.main()
-        game.game_over()
 
     pg.quit()
     exit()
